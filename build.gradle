@@ -1,0 +1,31 @@
+group 'eisoo'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    restassured = '3.0.3'
+    jacksonVersion = '2.5.4'
+
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile(
+            "io.rest-assured:rest-assured:$restassured",
+            'io.rest-assured:json_schema-validator:3.0.3',
+            'io.rest-assured:spring-mock-mvc:3.0.3'
+    )
+    compile ('io.rest-assured:rest-assured:3.0.3',
+            'io.rest-assured:json-path:3.0.3',
+            'io.rest-assured:xml-path:3.0.3',
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    )
+
+}
