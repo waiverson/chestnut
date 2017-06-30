@@ -6,6 +6,7 @@ import com.eisoo.dcos.lae.config.LaeUserConfig;
 
 import static io.restassured.RestAssured.*;
 
+import com.eisoo.dcos.lae.models.CommandModel;
 import com.eisoo.dcos.lae.util.URLs;
 import io.restassured.response.Response;
 
@@ -35,11 +36,12 @@ public class AuthenticateAction {
     }
 
     public void login(LaeUserConfig user) {
-        String url = URLs.join(LaeContextConfig.getBaseUri(), Index.getPath(loginPathKey));
+        CommandModel command = Index.getCommandInfo(loginPathKey);
+        String url = URLs.join(LaeContextConfig.getBaseUri(), command.getPath());
         this.resp =
                 given().param("user", user.getUserName()).
                         param("password", user.getPwd()).
-                        when().post(url).
+                        when().request(command.getMethod(), url).
                         then().
                         extract().
                         response();

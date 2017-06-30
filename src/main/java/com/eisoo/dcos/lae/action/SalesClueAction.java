@@ -2,10 +2,14 @@ package com.eisoo.dcos.lae.action;
 
 
 import com.eisoo.dcos.lae.config.LaeContextConfig;
+import com.eisoo.dcos.lae.models.CommandModel;
 import com.eisoo.dcos.lae.models.ConditionModel.Condition;
 import com.eisoo.dcos.lae.util.URLs;
 import io.restassured.response.Response;
 import com.eisoo.dcos.lae.apis.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -15,18 +19,20 @@ import static io.restassured.RestAssured.given;
 
 public class SalesClueAction {
 
-    private static String createPath = "create";
+    private static String  createKey = "create";
 
-    public static Response createSalesClue(String name, ExecStatus status, Condition industry) {
-        String url = URLs.join(LaeContextConfig.getBaseUri(), SalesCluePO.getPath(createPath));
-        Response resp =
-                given().param("name", name).
-                        param("status", status.getId()).
-                        param("indstry_id", industry.getContent()).
-                        when().post(url).
-                        then().
-                        extract().
-                        response();
+    public static String createSalesClue(String name, ExecStatus status, Condition industry) {
+        CommandModel command = SalesCluePO.getCommandInfo(createKey);
+        String url = URLs.join(LaeContextConfig.getBaseUri(), command.getPath());
+        Map<String,Object> parametersMap = new HashMap<String, Object>();
+        parametersMap.put("name", name);
+        parametersMap.put("status", status.getId());
+        parametersMap.putAll(industry.getParams());
+        String resp =
+                given().params(parametersMap).
+                        when().
+                        request(command.getMethod(), url).
+                        asString();
         return resp;
 
     }

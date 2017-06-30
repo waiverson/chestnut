@@ -1,8 +1,16 @@
 package com.eisoo.dcos.lae.models.ConditionModel;
 
+import java.util.Map;
+
 /**
- * Created by Administrator on 2017/6/16.
+ * Created by xyc on 2017/6/16.
  */
 public interface Condition {
-    public String getContent();
+
+    public String getHeaders();
+
+    public Map<String, ?> getParams();
+
+    public String getBody();
+
 }

@@ -41,7 +41,6 @@ public class HighEducation extends AbstractDeskIndustry {
     @Override
     public String getName() {
         return this.name;
-
     }
 
     @Override
